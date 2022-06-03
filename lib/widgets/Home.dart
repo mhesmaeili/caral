@@ -8,7 +8,13 @@ import 'package:http/http.dart' as http;
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
-final List<String> imgList = ['assets/images/10.jpg', 'assets/images/11.jpg'];
+import '../CommonFunction.dart';
+import '../ConstVariable.dart';
+
+final List<String> imgList = [
+  'assets/images/slider1.png',
+  'assets/images/slider2.png',
+];
 
 final themeMode = ValueNotifier(2);
 
@@ -33,7 +39,7 @@ class _Home extends State<Home> {
   @override
   void didChangeDependencies() {
     if (!_loadedInitData) {
-      number = '989903838648';
+      number = ConstVariable.MOBILE_NUMBER;
       _loadedInitData = true;
     }
     super.didChangeDependencies();
@@ -69,49 +75,68 @@ class _Home extends State<Home> {
   Future<void> _initPackageInfo(String releaseNo) async {
     final info = await PackageInfo.fromPlatform();
     _packageInfo = info;
-    print(_packageInfo.version.compareTo(releaseNo));
     if (_packageInfo.version.compareTo(releaseNo) < 0) {
       _showMyDialog();
     }
   }
+
+  final List<Widget> imageSliders = imgList
+      .map((item) => Container(
+            child: Container(
+              margin: EdgeInsets.only(top: 20.0),
+              child: ClipRRect(
+                  borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                  child: Stack(
+                    children: <Widget>[
+                      Image.asset(
+                        item,
+                        fit: BoxFit.cover,
+                        width: 1000.0,
+                      ),
+                      /*Positioned(
+                bottom: 0.0,
+                left: 0.0,
+                right: 0.0,
+                child: Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Color.fromARGB(200, 0, 0, 0),
+                        Color.fromARGB(0, 0, 0, 0)
+                      ],
+                      begin: Alignment.bottomCenter,
+                      end: Alignment.topCenter,
+                    ),
+                  ),
+                  padding: EdgeInsets.symmetric(
+                      vertical: 10.0, horizontal: 20.0),
+                  child: Text(''
+                    */ /*'No. ${imgList.indexOf(item)} image',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 20.0,
+                      fontWeight: FontWeight.bold,
+                    ),*/ /*
+                  ),
+                ),
+              ),*/
+                    ],
+                  )),
+            ),
+          ))
+      .toList();
 
   @override
   Widget build(BuildContext context) {
     return ListView(
       children: [
         Container(
-            child: CarouselSlider.builder(
-          options: CarouselOptions(
-            aspectRatio: 2.0,
-            enlargeCenterPage: false,
-            viewportFraction: 1,
+          child: CarouselSlider(
+            options: CarouselOptions(
+                autoPlay: true, aspectRatio: 2.0, enlargeCenterPage: true),
+            items: imageSliders,
           ),
-          itemCount: (imgList.length / 2).round(),
-          itemBuilder: (context, index, realIdx) {
-            final int first = index * 2;
-            final int second = first + 1;
-            return Row(
-              children: [first, second].map((idx) {
-                return Expanded(
-                  flex: 1,
-                  child: Container(
-                    margin: EdgeInsets.symmetric(horizontal: 10),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(15),
-                        topRight: Radius.circular(15),
-                      ),
-                      child: Image.asset(
-                        imgList[idx],
-                        fit: BoxFit.fill,
-                      ),
-                    ),
-                  ),
-                );
-              }).toList(),
-            );
-          },
-        )),
+        ),
         Visibility(
           //userType: Driver
           visible: true,
@@ -198,7 +223,8 @@ class _Home extends State<Home> {
                     textAlign: TextAlign.center,
                   ),
                   onTap: () => launch(Platform.isAndroid
-                      ? 'http://caralapp.ir:8085/api/downloadApp/androidCaralApp.apk'
+                      //? 'http://caralapp.ir:8085/api/downloadApp/androidCaralApp.apk'
+                      ? 'https://cafebazaar.ir/app/com.example.caralapp'
                       : 'http://caralapp.ir:8085/api/downloadApp/iosCaralApp.ipa')),
               TextButton(
                 child: const Text(
@@ -215,4 +241,5 @@ class _Home extends State<Home> {
       },
     );
   }
+
 }

@@ -10,6 +10,8 @@ import 'package:pushe_flutter/pushe.dart';
 import '../CommonFunction.dart';
 import 'Activation.dart';
 import 'MyWebView.dart';
+import 'Privacy.dart';
+import 'Rules.dart';
 
 class LandingPage extends StatefulWidget {
   static const routeName = '/LandingPage';
@@ -139,7 +141,7 @@ class _LandingPageState extends State<LandingPage> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        'را می پذیرم',
+                        ' را می پذیرم',
                         style: TextStyle(
                           fontFamily: 'IRANSANS',
                           fontSize: 14,
@@ -148,7 +150,7 @@ class _LandingPageState extends State<LandingPage> {
                       ),
                       GestureDetector(
                         child: Text(
-                          'قوانین و حریم خصوصی',
+                          'حریم خصوصی',
                           style: TextStyle(
                               fontFamily: 'IRANSANS',
                               color: Theme.of(context).primaryColor,
@@ -158,12 +160,36 @@ class _LandingPageState extends State<LandingPage> {
                           textAlign: TextAlign.center,
                         ),
                         onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
+                          /*Navigator.of(context).push(MaterialPageRoute(
                               builder: (BuildContext context) => MyWebView(
-                                    title: 'قوانین و حریم خصوصی کارال',
-                                    selectedUrl:
-                                        'http://caralapp.ir/rules',
-                                  )));
+                                title: 'حریم خصوصی',
+                                selectedUrl:
+                                'http://caralapp.ir/privacy',
+                              )));*/
+                          Navigator.of(context).pushNamed(Privacy.routeName);
+                        },
+                      ),
+                      Text(
+                        ' و ',
+                        style: TextStyle(
+                          fontFamily: 'IRANSANS',
+                          fontSize: 14,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                      GestureDetector(
+                        child: Text(
+                          'قوانین',
+                          style: TextStyle(
+                              fontFamily: 'IRANSANS',
+                              color: Theme.of(context).primaryColor,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              decoration: TextDecoration.underline),
+                          textAlign: TextAlign.center,
+                        ),
+                        onTap: () {
+                          Navigator.of(context).pushNamed(Rules.routeName);
                         },
                       ),
 

@@ -1,11 +1,16 @@
+import 'dart:convert';
+import 'dart:io';
+
 import 'package:double_back_to_close/double_back_to_close.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import '/class/ThemeModel.dart';
 import '/widgets/Home.dart';
 import '/widgets/MainDrawer.dart';
 import '/widgets/Scanner.dart';
+import '../CommonFunction.dart';
 import 'MessagesInbox.dart';
 
 class TabScreen extends StatefulWidget {
@@ -21,6 +26,9 @@ class _TabScreen extends State<TabScreen> {
   late List<Map<String, Object>> _pages;
   int _selectedPageIndex = 1;
   final _scaffoldKey = GlobalKey<ScaffoldState>();
+  String token = '';
+  String count = '';
+  var _loadedInitData = false;
 
   static const TextStyle optionStyle =
       TextStyle(fontSize: 30, fontWeight: FontWeight.bold);
@@ -29,6 +37,18 @@ class _TabScreen extends State<TabScreen> {
     Home(),
     //Registration(),
   ];
+
+  @override
+  void didChangeDependencies() {
+    if (!_loadedInitData) {
+      CommonFunction.getSharedPreferences('TOKEN_CARAL').then((value) {
+        token = value;
+        getCountMessagesForUerNoSeen();
+      });
+      _loadedInitData = true;
+    }
+    super.didChangeDependencies();
+  }
 
   void _selectPage(int index) {
     setState(() {
@@ -44,14 +64,40 @@ class _TabScreen extends State<TabScreen> {
         appBar: AppBar(
           title: Text('کارال'),
           centerTitle: true,
-          leading: IconButton(
-              icon: Icon(
-                Icons.forward_to_inbox_rounded,
-                color: Theme.of(context).secondaryHeaderColor,
-              ),
-              onPressed: () {
-                Navigator.of(context).pushNamed(MessagesInbox.routeName);
-              }),
+          leading: Stack(children: [
+            IconButton(
+                icon: Icon(
+                  Icons.forward_to_inbox_rounded,
+                  color: Theme.of(context).secondaryHeaderColor,
+                ),
+                onPressed: () {
+                  Navigator.of(context).pushNamed(MessagesInbox.routeName);
+                }),
+            if (count != '0' && count!='')
+              Positioned(
+                right: 8,
+                top: 8,
+                child: Container(
+                  padding: EdgeInsets.all(2.0),
+                  // color: Theme.of(context).accentColor,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    color: Theme.of(context).accentColor,
+                  ),
+                  constraints: BoxConstraints(
+                    minWidth: 16,
+                    minHeight: 16,
+                  ),
+                  child: Text(
+                    count,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(fontFamily: 'BYekan',
+                      fontSize: 10,
+                    ),
+                  ),
+                ),
+              )
+          ]),
           actions: [
             IconButton(
                 icon: Icon(
@@ -107,5 +153,23 @@ class _TabScreen extends State<TabScreen> {
         endDrawer: MainDrawer(),
       );
     });
+  }
+
+  Future<void> getCountMessagesForUerNoSeen() async {
+    final uri = Uri.http('caralapp.ir:8085',
+        '/api/userCarAssignMessage/getCountMessagesForUerNoSeen');
+    final headers = {
+      HttpHeaders.contentTypeHeader: 'application/json',
+      'x-auth-token': token,
+    };
+    final response = await http.post(uri, headers: headers, body: '');
+    if(response.statusCode==200) {
+      var jsonResponse = jsonDecode(response.body) as Map<String, dynamic>;
+      int count = jsonResponse['data'][0]['count'];
+      print('COUNT: $count.');
+      setState(() {
+        this.count = count.toString();
+      });
+    }
   }
 }

@@ -57,13 +57,15 @@ class _ProfileState extends State<Profile> {
         if (result) {
           userCarAssignInfo =
               UserCarAssignInfo.fromJson(jsonResponse['data'][0]);
-          setState(() {
-            name = userCarAssignInfo.Name;
-            color = userCarAssignInfo.Color;
-            brand = userCarAssignInfo.Brand;
-            plateNo = userCarAssignInfo.PlateNo;
-            plateType = userCarAssignInfo.PlateType;
-          });
+          if (mounted) {
+            setState(() {
+              name = userCarAssignInfo.Name;
+              color = userCarAssignInfo.Color;
+              brand = userCarAssignInfo.Brand;
+              plateNo = userCarAssignInfo.PlateNo;
+              plateType = userCarAssignInfo.PlateType;
+            });
+          }
         } else {
           body = {
             //'qrcode': 'c3dfb460-9773-4354-b804-83745545de6a',
@@ -107,11 +109,13 @@ class _ProfileState extends State<Profile> {
       List<MessageTemplates> list = parsed
           .map<MessageTemplates>((json) => MessageTemplates.fromJson(json))
           .toList();
-      setState(() {
-        messageTemplatesList = list.where((element) {
-          return element.ParentMessageTemplate_ID == null;
-        }).toList();
-      });
+      if (mounted) {
+        setState(() {
+          messageTemplatesList = list.where((element) {
+            return element.ParentMessageTemplate_ID == null;
+          }).toList();
+        });
+      }
     }
   }
 

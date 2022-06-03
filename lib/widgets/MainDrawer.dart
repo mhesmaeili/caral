@@ -1,10 +1,10 @@
-import 'package:caralapp/model/NewUserAssign.dart';
-import 'package:caralapp/widgets/Registration.dart';
+import '../pages/UserInformation.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 import '../CommonFunction.dart';
 import '../pages/TabScreen.dart';
+import '../pages/MessagesInbox.dart';
+import '../pages/Support.dart';
 
 class MainDrawer extends StatefulWidget {
   @override
@@ -47,8 +47,7 @@ class _MainDrawerState extends State<MainDrawer> {
                       fontFamily: 'BYekan',
                       fontWeight: FontWeight.bold,
                       fontSize: 15,
-                      color: Colors.white
-                  ),
+                      color: Colors.white),
                 ),
                 Text(
                   'کارال',
@@ -82,13 +81,13 @@ class _MainDrawerState extends State<MainDrawer> {
               Navigator.of(context).pushReplacementNamed(TabScreen.routeName);
             },
           ),
-          /*ListTile(
+          ListTile(
             trailing: Icon(
-              Icons.app_registration,
+              Icons.supervised_user_circle_outlined,
               size: 22,
             ),
             title: Text(
-              'ثبت نام',
+              'پروفایل',
               style: TextStyle(
                 fontFamily: 'IRANSANS',
                 fontSize: 15,
@@ -97,14 +96,51 @@ class _MainDrawerState extends State<MainDrawer> {
               textAlign: TextAlign.right,
             ),
             onTap: () {
-              NewUserAssign newUserAssign =
-                  Provider.of<NewUserAssign>(context, listen: false);
-              newUserAssign = NewUserAssign();
-              //_scaffoldKey.currentState!.dr();
               Navigator.of(context).pop();
-              Navigator.of(context).pushNamed(Registration.routeName);
+              Navigator.of(context)
+                  .pushNamed(UserInformation.routeName);
             },
-          ),*/
+          ),
+          ListTile(
+            trailing: Icon(
+              Icons.forward_to_inbox_rounded,
+              size: 22,
+            ),
+            title: Text(
+              'پیغام',
+              style: TextStyle(
+                fontFamily: 'IRANSANS',
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.right,
+            ),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context)
+                  .pushNamed(MessagesInbox.routeName);
+            },
+          ),
+          ListTile(
+            trailing: Icon(
+              Icons.support_agent,
+              size: 22,
+            ),
+            title: Text(
+              'پشتیبانی',
+              style: TextStyle(
+                fontFamily: 'IRANSANS',
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
+              textAlign: TextAlign.right,
+            ),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context)
+                  .pushNamed(Support.routeName);
+            },
+          ),
           ListTile(
             trailing: Icon(
               Icons.exit_to_app,

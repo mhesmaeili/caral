@@ -1,5 +1,5 @@
 name: caralapp
-description: A new Flutter project.
+description: call with driver
 
 # The following line prevents the package from being accidentally published to
 # pub.dev using `flutter pub publish`. This is preferred for private packages.
@@ -15,7 +15,7 @@ publish_to: 'none' # Remove this line if you wish to publish to pub.dev
 # In iOS, build-name is used as CFBundleShortVersionString while build-number used as CFBundleVersion.
 # Read more about iOS versioning at
 # https://developer.apple.com/library/archive/documentation/General/Reference/InfoPlistKeyReference/Articles/CoreFoundationKeys.html
-version: 1.0.1+2
+version: 1.0.2+3
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
@@ -26,6 +26,9 @@ environment:
 # dependencies can be manually updated by changing the version numbers below to
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
+#dependency_overrides:
+#  url_launcher_web: 2.0.6
+
 dependencies:
   flutter:
     sdk: flutter
@@ -51,7 +54,6 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
-  device_preview: ^1.0.0
 
 dev_dependencies:
   flutter_test:
@@ -84,8 +86,8 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-   - assets/images/10.jpg
-   - assets/images/11.jpg
+   - assets/images/slider1.png
+   - assets/images/slider2.png
    - assets/images/splash.png
    - assets/images/plate.png
    - assets/images/FreeZonePlate.svg
@@ -124,10 +126,6 @@ flutter:
     - family: BYekan
       fonts:
         - asset: assets/fonts/B YEKAN.TTF
-          weight: 700
-    - family: IRSANS
-      fonts:
-        - asset: assets/fonts/IRSANS.TTF
           weight: 700
           #style:
   #   - family: Trajan Pro

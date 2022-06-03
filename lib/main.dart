@@ -20,30 +20,20 @@ import 'pages/Activation.dart';
 import 'pages/LandingPage.dart';
 import 'pages/MessagesInbox.dart';
 import 'pages/MessagesInboxComplete.dart';
+import 'pages/Privacy.dart';
 import 'pages/Profile.dart';
+import 'pages/Rules.dart';
+import 'pages/Support.dart';
 import 'pages/TabScreen.dart';
 import 'widgets/Registration.dart';
 import 'widgets/Scanner.dart';
-import 'package:device_preview/device_preview.dart';
+import 'pages/UserInformation.dart';
 
 bool _initialUriIsHandled = false;
 
 void main() {
   runApp(const MyApp());
 }
-
-/*void main() {
-  runApp(
-    DevicePreview(
-      *//*enabled: true,
-      tools: [
-        ...DevicePreview.defaultTools,
-        const CustomPlugin(),
-      ],*//*
-      builder: (context) => const MyApp(),
-    ),
-  );
-}*/
 
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
@@ -77,6 +67,10 @@ class MyApp extends StatelessWidget {
               MessagesInbox.routeName: (ctx) => MessagesInbox(),
               ReplyToMessages.routeName: (ctx) => ReplyToMessages(),
               MessagesInboxComplete.routeName: (ctx) => MessagesInboxComplete(),
+              UserInformation.routeName: (ctx) => UserInformation(),
+              Rules.routeName: (ctx) => Rules(),
+              Privacy.routeName: (ctx) => Privacy(),
+              Support.routeName: (ctx) => Support(),
             },
           );
         }),
@@ -113,7 +107,10 @@ class _MyHomePageState extends State<MyHomePage> {
         if (!Jwt.isExpired(decode)) {
           _handleIncomingLinks();
           _handleInitialUri().then((value) {
-            Navigator.of(context).pushReplacementNamed(TabScreen.routeName);
+            if(_initialUri!=null)
+              Navigator.of(context).pushReplacementNamed(Profile.routeName, arguments: _initialUri.toString());
+            else
+              Navigator.of(context).pushReplacementNamed(TabScreen.routeName);
           });
         } else {
           setState(() {
@@ -252,14 +249,12 @@ class _MyHomePageState extends State<MyHomePage> {
     // was a weidget that will be disposed of (ex. a navigation route change).
     if (!_initialUriIsHandled) {
       _initialUriIsHandled = true;
-      //_showSnackBar('_handleInitialUri called');
       try {
         final uri = await getInitialUri();
         if (uri == null) {
           print('no initial uri');
         } else {
-          Navigator.of(context).pushReplacementNamed(Profile.routeName,
-              arguments: uri.toString());
+          //Navigator.of(context).pushReplacementNamed(Profile.routeName, arguments: uri.toString());
           print('got initial uri: $uri');
         }
         if (!mounted) return;
